@@ -20,7 +20,7 @@ object ETLJob {
     // 过滤出行业投入不为null的数据
     val df2 = df.filter(df("行业投入").isNotNull)
 
-    val df3 = df2.filter(df2("行业投}入") =!= 0)
+    val df3 = df2.filter(df2("行业投入") =!= 0)
 
     // 发现不为NULL的数据少 ->  清洗数据
     println("去除行业投入为Null或者为0的数据剩余总行数: " + df3.count())
