@@ -22,15 +22,19 @@ object ETLJob {
 
     val df3 = df2.filter(df2("行业投}入") =!= 0)
 
-    //发现不为NULL的数据少 ->  清洗数据
+    // 发现不为NULL的数据少 ->  清洗数据
     println("去除行业投入为Null或者为0的数据剩余总行数: " + df3.count())
-    //统计有行业投入但是 曝光数量为0的数据  这部分数据我们认为是脏数据 总计1988条
+
+    // 统计有行业投入但是 曝光数量为0的数据  这部分数据我们认为是脏数据 总计1988条
     val df4 = df3.filter(df3("曝光数量").isNotNull)
     val df5 = df4.filter(df4("曝光数量") =!= 0)
-    //把行业编码列转为String以便后面拆分列操作
+
+    // 把行业编码列转为String以便后面拆分列操作
     val df6 = df5.withColumn("行业编码", col("行业编码").cast(StringType))
-    //创建表
+
+    // 创建表
     df6.createTempView("IS")
+
     // 编写UDF
     spark.udf.register("Industry1", (x: String) => x.substring(0, 2))
     spark.udf.register("Industry2", (x: String) => x.substring(2, 4))
